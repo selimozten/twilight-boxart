@@ -1,18 +1,68 @@
 # TwilightBoxart
 
-A GUI tool that automatically downloads and manages box art for [TwilightMenu++](https://github.com/DS-Homebrew/TWiLightMenu) on Nintendo DS/DSi flashcarts.
+A GUI tool that automatically downloads box art for your [TwilightMenu++](https://github.com/DS-Homebrew/TWiLightMenu) SD card. Point it at your SD card, hit start, and it fills in all the cover art for your ROM collection.
 
-## Features
+## Download
 
-- Auto-detects SD cards with TwilightMenu++ installed
-- Downloads box art from multiple sources: GameTDB, LibRetro Thumbnails, SteamGridDB
-- Supports NES, SNES, GB, GBC, GBA, NDS, Game Gear, Genesis, Master System ROMs
-- Parallel downloads with 8 worker threads
-- Auto-generates 32x32 custom icons for non-NDS ROMs
-- Configurable output size and aspect ratio
-- Drag & drop folder support
+Grab the latest release for your platform from the [Releases](../../releases) page:
 
-## Building
+- **macOS** — `twilight-boxart-macos-arm64`
+- **Linux** — `twilight-boxart-linux-x86_64`
+- **Windows** — `twilight-boxart-windows-x86_64.exe`
+
+No installation needed — just download and run.
+
+> On macOS you may need to right-click and select "Open" the first time, since the app is not signed.
+
+## Usage
+
+1. Insert your DS/DSi SD card
+2. Launch TwilightBoxart
+3. Your SD card should be auto-detected — if not, click **Browse** or **Detect SD**, or drag & drop the folder
+4. Pick a size preset and tweak settings if you want
+5. *(Optional)* Paste a free [SteamGridDB API key](https://www.steamgriddb.com/) for extra box art coverage
+6. Click **Start Download** (or press **Enter**)
+7. Wait for it to finish, then safely eject your SD card
+
+Your settings (SD path, API key, preferences) are saved automatically between sessions.
+
+## Supported Systems
+
+| System | Extensions |
+|--------|-----------|
+| Nintendo DS | `.nds`, `.dsi` |
+| Game Boy Advance | `.gba` |
+| Game Boy / Color | `.gb`, `.gbc` |
+| Super Nintendo | `.sfc`, `.smc` |
+| Nintendo Entertainment System | `.nes` |
+| Famicom Disk System | `.fds` |
+| Sega Genesis / Mega Drive | `.gen` |
+| Sega Master System | `.sms` |
+| Sega Game Gear | `.gg` |
+
+## How It Works
+
+TwilightBoxart scans your SD card for ROM files and downloads matching box art from multiple sources:
+
+1. **GameTDB** — high-quality covers for NDS games (matched by game code from the ROM header)
+2. **LibRetro Thumbnails** — community-maintained box art for all retro systems
+3. **SteamGridDB** — optional fallback with broad game coverage (requires free API key)
+
+Images are resized to fit the DS screen and saved as PNGs in the `_nds/TWiLightMenu/boxart` folder. For non-NDS ROMs, 32x32 custom icons are also generated.
+
+## Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Enter` | Start download |
+| `Escape` | Stop download |
+| `Tab` | Cycle between text fields |
+| `Cmd/Ctrl + V` | Paste into text field |
+
+## Building from Source
+
+<details>
+<summary>Click to expand build instructions</summary>
 
 ### Prerequisites
 
@@ -59,14 +109,7 @@ cmake -B build -G "MinGW Makefiles"
 cmake --build build
 ```
 
-## Usage
-
-1. Insert your DS/DSi SD card
-2. Launch TwilightBoxart
-3. Select your SD card root (or let it auto-detect)
-4. Optionally enter a [SteamGridDB API key](https://www.steamgriddb.com/) for extra coverage
-5. Click **Start Download**
-6. Wait for completion, then safely eject your SD card
+</details>
 
 ## License
 
