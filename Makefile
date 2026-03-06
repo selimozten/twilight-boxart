@@ -19,14 +19,14 @@ else ifeq ($(UNAME_S),Linux)
     LDFLAGS += -lm -lpthread -ldl
 endif
 
-SRC = src/main.c src/crawler.c
+SRC = src/main.c src/crawler.c src/platform.c
 OUT = twilight-boxart
 
 .PHONY: all clean run
 
 all: $(OUT)
 
-$(OUT): $(SRC) src/crawler.h
+$(OUT): $(SRC) src/crawler.h src/platform.h
 	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
 
 run: $(OUT)

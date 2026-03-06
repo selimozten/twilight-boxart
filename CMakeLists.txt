@@ -19,7 +19,7 @@ endif()
 # Find libcurl (must be installed on the system)
 find_package(CURL REQUIRED)
 
-add_executable(twilight-boxart src/main.c src/crawler.c)
+add_executable(twilight-boxart src/main.c src/crawler.c src/platform.c)
 target_include_directories(twilight-boxart PRIVATE src)
 target_link_libraries(twilight-boxart raylib CURL::libcurl)
 
