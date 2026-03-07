@@ -30,6 +30,29 @@ if(APPLE)
         "-framework OpenGL"
         "-framework CoreVideo"
     )
+
+    # --- macOS .app bundle ---
+    set(APP_NAME "twilight-boxart")
+    set(APP_DISPLAY_NAME "Twilight BoxArt")
+    set(APP_BUNDLE_ID "com.selimozten.twilight-boxart")
+    set(APP_EXECUTABLE "twilight-boxart")
+
+    configure_file(${CMAKE_SOURCE_DIR}/macos/Info.plist.in
+                   ${CMAKE_BINARY_DIR}/Info.plist @ONLY)
+
+    add_custom_target(app-bundle ALL
+        DEPENDS twilight-boxart
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}/Twilight BoxArt.app"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/Twilight BoxArt.app/Contents/MacOS"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/Twilight BoxArt.app/Contents/Resources"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/twilight-boxart"
+                "${CMAKE_BINARY_DIR}/Twilight BoxArt.app/Contents/MacOS/twilight-boxart"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/Info.plist"
+                "${CMAKE_BINARY_DIR}/Twilight BoxArt.app/Contents/Info.plist"
+        COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/macos/app.icns"
+                "${CMAKE_BINARY_DIR}/Twilight BoxArt.app/Contents/Resources/app.icns"
+        COMMENT "Creating Twilight BoxArt.app bundle"
+    )
 elseif(WIN32)
     target_link_libraries(twilight-boxart ole32 shell32 winmm gdi32 opengl32)
 elseif(UNIX)

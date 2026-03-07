@@ -14,18 +14,32 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: brew install curl
+        run: brew install curl create-dmg
 
       - name: Build
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release
           cmake --build build --config Release
 
+      - name: Create DMG
+        run: |
+          create-dmg \
+            --volname "Twilight BoxArt" \
+            --volicon "macos/app.icns" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "Twilight BoxArt.app" 150 185 \
+            --hide-extension "Twilight BoxArt.app" \
+            --app-drop-link 450 185 \
+            "Twilight-BoxArt.dmg" \
+            "build/Twilight BoxArt.app"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: twilight-boxart-macos
-          path: build/twilight-boxart
+          path: Twilight-BoxArt.dmg
 
   build-linux:
     runs-on: ubuntu-latest
@@ -91,16 +105,15 @@ jobs:
 
       - name: Package binaries
         run: |
-          mv twilight-boxart-macos/twilight-boxart twilight-boxart-macos-arm64
           mv twilight-boxart-linux/twilight-boxart twilight-boxart-linux-x86_64
           mv twilight-boxart-windows/twilight-boxart.exe twilight-boxart-windows-x86_64.exe
-          chmod +x twilight-boxart-macos-arm64 twilight-boxart-linux-x86_64
+          chmod +x twilight-boxart-linux-x86_64
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           files: |
-            twilight-boxart-macos-arm64
+            twilight-boxart-macos/Twilight-BoxArt.dmg
             twilight-boxart-linux-x86_64
             twilight-boxart-windows-x86_64.exe
